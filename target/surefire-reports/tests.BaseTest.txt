@@ -1,0 +1,9 @@
+-------------------------------------------------------------------------------
+Test set: tests.BaseTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.003 s <<< FAILURE! - in tests.BaseTest
+initializationError(tests.BaseTest)  Time elapsed: 0.003 s  <<< ERROR!
+org.junit.runners.model.InvalidTestClassError: 
+Invalid test class 'tests.BaseTest':
+  1. No runnable methods
+
