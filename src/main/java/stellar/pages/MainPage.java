@@ -77,12 +77,23 @@ public class MainPage extends BasePage {
     public void selectFillingsSection() {
         waitForClickable(fillingsSection);
         fillingsSection.click();
+        waitForSectionActive("Начинки");
     }
     private void waitForSectionActive(String sectionName) {
-        wait.until(ExpectedConditions.attributeContains(
-                activeTab, "class", "current"));
-        wait.until(ExpectedConditions.textToBePresentInElement(
-                activeTab, sectionName));
+        WebElement sectionElement = getSectionElement(sectionName);
+        wait.until(ExpectedConditions.attributeContains(sectionElement, "class", "current"));
+    }
+    private WebElement getSectionElement(String sectionName) {
+        switch (sectionName) {
+            case "Булки":
+                return bunsSection;
+            case "Соусы":
+                return saucesSection;
+            case "Начинки":
+                return fillingsSection;
+            default:
+                throw new IllegalArgumentException("Неизвестный раздел: " + sectionName);
+        }
     }
     /**
      * Проверка активного раздела конструктора
@@ -90,7 +101,7 @@ public class MainPage extends BasePage {
      * @return true если раздел активен
      */
     public boolean isSectionActive(String sectionName) {
-        waitForVisibility(activeTab);
-        return activeTab.getText().contains(sectionName);
+        WebElement sectionElement = getSectionElement(sectionName);
+        return sectionElement.getAttribute("class").contains("current");
     }
 }
