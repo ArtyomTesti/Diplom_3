@@ -14,41 +14,39 @@ import static org.junit.Assert.assertTrue;
 public class ConstructorSectionsTest extends BaseTest {
 
     @Test
-    @DisplayName("Проверка переключения между разделами конструктора")
-    @Description("Тест проверяет корректность переключения между всеми разделами конструктора: " +
-            "1. Проверяем начальное состояние (активны Булки) " +
-            "2. Переключаемся на Соусы и проверяем " +
-            "3. Переключаемся на Начинки и проверяем " +
-            "4. Возвращаемся к Буклам и проверяем")
-    public void testAllSectionsNavigation() {
+    @DisplayName("Проверка активности раздела 'Булки' при загрузке страницы")
+    @Description("Тест проверяет, что по умолчанию активен раздел 'Булки'")
+    public void testBunsSectionIsActiveByDefault() {
         MainPage mainPage = new MainPage(driver);
-
-        // Проверка начального состояния
         assertTrue("При загрузке должен быть активен раздел 'Булки'",
                 mainPage.isSectionActive("Булки"));
-
-        // Тест раздела Соусы
+    }
+    @Test
+    @DisplayName("Проверка переключения на раздел 'Соусы'")
+    @Description("Тест проверяет корректность переключения на раздел 'Соусы'")
+    public void testSwitchToSaucesSection() {
+        MainPage mainPage = new MainPage(driver);
         mainPage.selectSaucesSection();
         assertTrue("После перехода должен быть активен раздел 'Соусы'",
                 mainPage.isSectionActive("Соусы"));
-
-        // Тест раздела Начинки
+    }
+    @Test
+    @DisplayName("Проверка переключения на раздел 'Начинки'")
+    @Description("Тест проверяет корректность переключения на раздел 'Начинки'")
+    public void testSwitchToFillingsSection() {
+        MainPage mainPage = new MainPage(driver);
         mainPage.selectFillingsSection();
         assertTrue("После перехода должен быть активен раздел 'Начинки'",
                 mainPage.isSectionActive("Начинки"));
-
-        // Возврат к Буклам
-        mainPage.selectBunsSection();
-        waitForSectionStabilization();
-        assertTrue("После повторного перехода должен быть активен раздел 'Булки'",
+    }
+    @Test
+    @DisplayName("Проверка возврата в раздел 'Булки' после переключения")
+    @Description("Тест проверяет корректность возврата в раздел 'Булки' после другого раздела")
+    public void testSwitchBackToBunsSection() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.selectSaucesSection(); // Переключаемся на соусы
+        mainPage.selectBunsSection();   // Возвращаемся к булкам
+        assertTrue("После возврата должен быть активен раздел 'Булки'",
                 mainPage.isSectionActive("Булки"));
     }
-
-    private void waitForSectionStabilization() {
-        try {
-            Thread.sleep(1000); // Пауза 1 секунда
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
-}

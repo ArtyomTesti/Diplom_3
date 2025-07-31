@@ -1,5 +1,6 @@
 package registration;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import stellar.api.UserAPI;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
@@ -11,6 +12,7 @@ import stellar.pages.RegistrationPage;
 import stellar.pages.LoginPage;
 import tests.BaseTest;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -22,8 +24,20 @@ public class RegistrationPositiveTest extends BaseTest {
 
     @Before
     public void setUp() {
-        super.setUp(); // <- КРИТИЧЕСКИ ВАЖНО: добавляем вызов родительского метода
-        userData = UserAPI.createRandomUser();
+        super.setUp();
+        userData = generateRandomUserData();
+    }
+
+    private Map<String, String> generateRandomUserData() {
+        String email = RandomStringUtils.randomAlphanumeric(10) + "@example.com";
+        String password = RandomStringUtils.randomAlphanumeric(10);
+        String name = RandomStringUtils.randomAlphanumeric(10);
+
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", email);
+        userData.put("password", password);
+        userData.put("name", name);
+        return userData;
     }
 
     @After
@@ -32,8 +46,7 @@ public class RegistrationPositiveTest extends BaseTest {
             UserAPI.deleteUser(token);
         }
     }
-//В этом тесте после заполнения полей и нажатия на кнопку "Зарегистрироваться" появляется сообщение об ошибке "Такой пользователь уже существует"
-    // Задумано ли это так?
+
     @Test
     @DisplayName("Успешная регистрация нового пользователя")
     @Description("Тест проверяет успешную регистрацию нового пользователя через UI: " +
@@ -55,12 +68,15 @@ public class RegistrationPositiveTest extends BaseTest {
                 userData.get("password")
         );
 
-        token = UserAPI.loginUserAndGetToken(userData.get("email"), userData.get("password"));
-
+        token = UserAPI.loginUserAndGetToken(
+                userData.get("email"),
+                userData.get("password")
+        );
         LoginPage newLoginPage = new LoginPage(driver);
         assertTrue("После регистрации должна отображаться страница входа",
                 newLoginPage.isLoginButtonDisplayed());
     }
+
 
     @Test
     @DisplayName("Регистрация с паролем короче 6 символов")

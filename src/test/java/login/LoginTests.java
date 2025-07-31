@@ -22,7 +22,10 @@ public class LoginTests extends BaseTest {
 
     @Before
     public void setUpUser() {
-        userData = UserAPI.createRandomUser();
+        // Генерируем данные пользователя
+        userData = UserAPI.generateRandomUserData();
+        // Регистрируем пользователя через API
+        token = UserAPI.registerUser(userData);
     }
 
     @After
@@ -42,8 +45,6 @@ public class LoginTests extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(userData.get("email"), userData.get("password"));
 
-        token = UserAPI.loginUserAndGetToken(userData.get("email"), userData.get("password"));
-
         assertTrue("После входа должен отображаться конструктор",
                 mainPage.isConstructorHeaderDisplayed());
     }
@@ -57,8 +58,6 @@ public class LoginTests extends BaseTest {
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(userData.get("email"), userData.get("password"));
-
-        token = UserAPI.loginUserAndGetToken(userData.get("email"), userData.get("password"));
 
         assertTrue("После входа должен отображаться конструктор",
                 mainPage.isConstructorHeaderDisplayed());
@@ -79,8 +78,6 @@ public class LoginTests extends BaseTest {
 
         loginPage.login(userData.get("email"), userData.get("password"));
 
-        token = UserAPI.loginUserAndGetToken(userData.get("email"), userData.get("password"));
-
         assertTrue("После входа должен отображаться конструктор",
                 mainPage.isConstructorHeaderDisplayed());
     }
@@ -99,8 +96,6 @@ public class LoginTests extends BaseTest {
         forgotPasswordPage.clickLoginLink();
 
         loginPage.login(userData.get("email"), userData.get("password"));
-
-        token = UserAPI.loginUserAndGetToken(userData.get("email"), userData.get("password"));
 
         assertTrue("После входа должен отображаться конструктор",
                 mainPage.isConstructorHeaderDisplayed());

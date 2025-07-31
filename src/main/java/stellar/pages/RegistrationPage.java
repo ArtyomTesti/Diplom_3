@@ -3,6 +3,7 @@ package stellar.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import io.qameta.allure.Step;
 
 /**
  * Страница регистрации нового пользователя
@@ -37,6 +38,7 @@ public class RegistrationPage extends BasePage {
      * @param Email email пользователя
      * @param password пароль пользователя
      */
+    @Step("Регистрация нового пользователя: имя = {name}, email = {Email}")
     public void register(String name, String Email, String password) {
         waitForVisibility(nameField);
         nameField.sendKeys(name);
@@ -49,6 +51,7 @@ public class RegistrationPage extends BasePage {
      * Получение текста ошибки
      * @return текст сообщения об ошибке
      */
+    @Step("Получить текст сообщения об ошибке")
     public String getErrorMessage() {
         waitForVisibility(errorMessage);
         return errorMessage.getText();
@@ -57,6 +60,7 @@ public class RegistrationPage extends BasePage {
     /**
      * Переход на страницу входа
      */
+    @Step("Нажать на ссылку 'Войти'")
     public void clickLoginLink() {
         waitForClickable(loginLink);
         loginLink.click();
